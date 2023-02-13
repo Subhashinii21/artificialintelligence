@@ -1,0 +1,30 @@
+class GameTree:
+    def __init__(self, state, parent=None):
+        self.state = state
+        self.parent = parent
+        self.children = []
+
+    def add_child(self, child_state):
+        child = GameTree(child_state, self)
+        self.children.append(child)
+        return child
+
+    def is_leaf(self):
+        return len(self.children) == 0
+
+    def get_path(self):
+        if self.parent is None:
+            return [self.state]
+        return self.parent.get_path() + [self.state]
+
+def build_game_tree(state, depth):
+    root = GameTree(state)
+    build_subtree(root, depth)
+    return root
+
+def build_subtree(node, depth):
+    if depth == 0 or some_terminal_condition_met(node.state):
+        return
+    for child_state in generate_child_states(node.state):
+        child = node.add_child(child_state)
+        build_subtree(child, depth - 1)
