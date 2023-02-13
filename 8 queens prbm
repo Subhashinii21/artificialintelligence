@@ -1,0 +1,27 @@
+def solve_eight_queens(board, queens_placed=0):
+    if queens_placed == 8:
+        print(board)
+        return
+
+    for row in range(8):
+        if is_valid_move(board, row, queens_placed):
+            board[row][queens_placed] = 1
+            solve_eight_queens(board, queens_placed + 1)
+            board[row][queens_placed] = 0
+
+def is_valid_move(board, row, col):
+    for i in range(col):
+        if board[row][i] == 1:
+            return False
+
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    for i, j in zip(range(row, 8, 1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+    return True
+
+board = [[0 for _ in range(8)] for _ in range(8)]
+solve_eight_queens(board)
