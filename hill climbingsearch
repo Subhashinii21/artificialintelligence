@@ -1,0 +1,7 @@
+def hill_climbing(problem):
+    current = problem.initial_state()
+    while True:
+        neighbor = problem.get_best_neighbor(current)
+        if problem.is_goal(neighbor):
+            return neighbor
+        current = neighbor
