@@ -1,0 +1,52 @@
+import heapq
+import numpy as np
+
+def find_zero(state):
+    for i in range(3):
+        for j in range(3):
+            if state[i][j] == 0:
+                return i, j
+    return -1, -1
+
+def get_neighbors(state, i, j):
+    neighbors = []
+    if i > 0:
+        neighbor = np.copy(state)
+        neighbor[i][j], neighbor[i-1][j] = neighbor[i-1][j], neighbor[i][j]
+        neighbors.append(neighbor)
+    if i < 2:
+        neighbor = np.copy(state)
+        neighbor[i][j], neighbor[i+1][j] = neighbor[i+1][j], neighbor[i][j]
+        neighbors.append(neighbor)
+    if j > 0:
+        neighbor = np.copy(state)
+        neighbor[i][j], neighbor[i][j-1] = neighbor[i][j-1], neighbor[i][j]
+        neighbors.append(neighbor)
+    if j < 2:
+        neighbor = np.copy(state)
+        neighbor[i][j], neighbor[i][j+1] = neighbor[i][j+1], neighbor[i][j]
+        neighbors.append(neighbor)
+    return neighbors
+
+def astar(start, goal):
+    heap = []
+    heapq.heappush(heap, (0, 0, start))
+    visited = set()
+    visited.add(tuple(start.flatten()))
+    while heap:
+        cost, depth, state = heapq.heappop(heap)
+        if np.array_equal(state, goal):
+            return depth
+        i, j = find_zero(state)
+        neighbors = get_neighbors(state, i, j)
+        for neighbor in neighbors:
+            if tuple(neighbor.flatten()) in visited:
+                continue
+            visited.add(tuple(neighbor.flatten()))
+            heuristic = np.sum(neighbor != goal)
+            heapq.heappush(heap, (depth + heuristic, depth + 1, neighbor))
+    return -1
+
+start = np.array([[8, 7, 6], [5, 4, 3], [2, 1, 0]])
+goal = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
+print("Minimum moves:", astar(start, goal))
