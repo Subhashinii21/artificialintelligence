@@ -1,0 +1,36 @@
+from itertools import permutations
+
+def solve(puzzle):
+    # Get all the unique characters in the puzzle
+    chars = set(puzzle)
+    # Remove any non-alphabetic characters
+    chars = chars - set("0123456789")
+    # Get all possible permutations of the digits 0-9
+    digits = [str(x) for x in range(10)]
+    for guess in permutations(digits, len(chars)):
+        # Create a dictionary that maps each character to its corresponding digit
+        mapping = dict(zip(chars, guess))
+        # Check if the mapping is valid
+        valid = True
+        for char in chars:
+            if mapping[char] == "0" and char in puzzle[:puzzle.index("+")]:
+                valid = False
+                break
+        if not valid:
+            continue
+        # Replace each character in the puzzle with its corresponding digit
+        equation = puzzle
+        for char in chars:
+            equation = equation.replace(char, mapping[char])
+        # Check if the equation is true
+        if eval(equation):
+            return mapping
+    return None
+
+# Example usage
+puzzle = "SEND + MORE = MONEY"
+solution = solve(puzzle)
+if solution:
+    print(solution)
+else:
+    print("No solution found.")
