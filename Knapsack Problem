@@ -1,0 +1,27 @@
+def knapsack(items, weight_limit):
+    # Create a matrix to store the maximum value for each weight
+    # limit up to the weight_limit
+    matrix = [[0 for _ in range(weight_limit + 1)] for _ in range(len(items) + 1)]
+
+    # Iterate through each item
+    for i in range(1, len(items) + 1):
+        # Iterate through each weight limit
+        for w in range(1, weight_limit + 1):
+            # Get the current item
+            item = items[i-1]
+            # If the item is too heavy to fit in the current weight limit,
+            # the maximum value is the value without the item
+            if item[1] > w:
+                matrix[i][w] = matrix[i-1][w]
+            # Otherwise, the maximum value is the maximum of the value with
+            # the item and without the item
+            else:
+                matrix[i][w] = max(matrix[i-1][w], matrix[i-1][w-item[1]] + item[0])
+
+    # Return the maximum value that can be achieved with the given weight limit
+    return matrix[len(items)][weight_limit]
+
+# Example usage:
+items = [(60, 10), (100, 20), (120, 30)]
+weight_limit = 50
+print(knapsack(items, weight_limit))
