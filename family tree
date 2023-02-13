@@ -1,0 +1,12 @@
+% Define the relationships between family members
+parent(john, jim).
+parent(jane, jim).
+parent(jim, anna).
+parent(jim, tim).
+parent(tim, tom).
+
+% Define the grandparent relationship
+grandparent(X, Z) :- parent(X, Y), parent(Y, Z).
+
+% Define the sibling relationship
+sibling(X, Y) :- parent(Z, X), parent(Z, Y), X \= Y.
