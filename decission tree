@@ -1,0 +1,14 @@
+from sklearn import tree
+from sklearn.datasets import load_iris
+
+# Load iris dataset as an example
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Train the Decision Tree Classifier
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(X, y)
+
+# Predict on a new sample
+print(clf.predict([[5.1, 3.5, 1.4, 0.2]]))
