@@ -1,0 +1,4 @@
+@@ -0,0 +1,2 @@
+gcd(A, 0, A) :- !.
+gcd(A, B, GCD) :- R is A mod B, gcd(B, R, GCD).
+0 comments on commit 7d72086
